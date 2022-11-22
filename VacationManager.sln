@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E2206908-03C2-4A5F-949D-9D93F6088FBD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8A35552C-4BCB-49EE-A4A2-48CEF1E9F068}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VacationManager", "src\VacationManager\VacationManager.csproj", "{8A886E0E-3482-441D-A28E-685AA09A1742}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VacationManager.Blazor", "src\VacationManager.Blazor\VacationManager.Blazor.csproj", "{E03F9852-D92D-4777-A8D4-DB177B86BE22}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8A886E0E-3482-441D-A28E-685AA09A1742} = {E2206908-03C2-4A5F-949D-9D93F6088FBD}
+		{E03F9852-D92D-4777-A8D4-DB177B86BE22} = {E2206908-03C2-4A5F-949D-9D93F6088FBD}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A886E0E-3482-441D-A28E-685AA09A1742}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A886E0E-3482-441D-A28E-685AA09A1742}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E03F9852-D92D-4777-A8D4-DB177B86BE22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E03F9852-D92D-4777-A8D4-DB177B86BE22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E03F9852-D92D-4777-A8D4-DB177B86BE22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E03F9852-D92D-4777-A8D4-DB177B86BE22}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
