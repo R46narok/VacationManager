@@ -1,141 +1,123 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Models;
-using Repositories.Interfaces;
-using Repositories.Mapper;
 using Models.SearchModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Repositories.Helpers;
 using ViewModels.Input;
 using Web.Services.Interfaces;
-using Repositories.Helpers;
 
-namespace Web.Controllers
+namespace Web.Controllers;
+
+public class RoleController : Controller
 {
-	public class RoleController : Controller
-	{
+    private readonly IMapper _mapper;
+    private readonly IRoleService _roleService;
 
-		private IMapper _mapper;
-		private IRoleService _roleService;
-		public RoleController(IMapper mapper, IRoleService roleService)
-		{
-			this._mapper = mapper;
-			this._roleService = roleService;
-		}
+    public RoleController(IMapper mapper, IRoleService roleService)
+    {
+        _mapper = mapper;
+        _roleService = roleService;
+    }
 
-		#region CreateRole
-		[HttpGet]
-		public IActionResult Create()
-		{
-			if(Logged.CEOAuth())
-            {
-				RoleViewModel model = new RoleViewModel();
-				return View(model);
-			}
-			return Unauthorized();
-			
-		}
+    #region DeleteRole
 
-		[HttpPost]
-		public IActionResult Create(RoleViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				Role role = this._mapper.Map<Role>(model);
-				_roleService.AddRole(role);
-				return RedirectToAction("Index", "Role");
-			}
-			else
-			{
-				return View(model);
-			}
-		}
-		#endregion
+    [HttpGet]
+    [Route("role/delete/{id}")]
+    public IActionResult Delete([FromRoute] string id)
+    {
+        if (Logged.CEOAuth())
+        {
+            if (id is null) return NotFound();
+            var deleteRole = _roleService.GetRole(id);
+            if (deleteRole is null) return NotFound();
+            _roleService.DeleteRole(deleteRole);
+            return RedirectToAction("Index", "Role");
+        }
+
+        return Unauthorized();
+    }
+
+    #endregion
+
+    [HttpGet]
+    public IActionResult Index()
+    {
+        var search = new RoleSearch();
+        search.Roles = _roleService.GetRoles();
+        return View(search);
+    }
+
+    [HttpGet]
+    public IActionResult Search(RoleSearch model)
+    {
+        model.Roles = _roleService.GetRoles();
+        if (model.Name is not null) model.Roles = model.Roles.Where(x => x.Name.Contains(model.Name)).ToList();
+        return View("Index", model);
+    }
+
+    #region CreateRole
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+        if (Logged.CEOAuth())
+        {
+            var model = new RoleViewModel();
+            return View(model);
+        }
+
+        return Unauthorized();
+    }
+
+    [HttpPost]
+    public IActionResult Create(RoleViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var role = _mapper.Map<Role>(model);
+            _roleService.AddRole(role);
+            return RedirectToAction("Index", "Role");
+        }
+
+        return View(model);
+    }
+
+    #endregion
 
     #region EditRole
+
     [HttpGet]
-		[Route("role/edit/{id}")]
-		public IActionResult Edit([FromRoute] string id)
-		{
-			if (Logged.CEOAuth())
-			{
-				if (string.IsNullOrEmpty(id))
-				{
-					return NotFound();
-				}
-				var role = this._roleService.GetRole(id);
-			EditRoleViewModel model = new EditRoleViewModel();
-			model.Id = id;
-			model.Name = role.Name;
-			return View(model);
-			}
-			else return Unauthorized();
-		}
+    [Route("role/edit/{id}")]
+    public IActionResult Edit([FromRoute] string id)
+    {
+        if (Logged.CEOAuth())
+        {
+            if (string.IsNullOrEmpty(id)) return NotFound();
+            var role = _roleService.GetRole(id);
+            var model = new EditRoleViewModel();
+            model.Id = id;
+            model.Name = role.Name;
+            return View(model);
+        }
 
-		[HttpPost("role/edit/{id}")]
-		public IActionResult Edit(RoleViewModel model, string id)
-		{
-			if (ModelState.IsValid)
-			{
-				Role role = this._mapper.Map<Role>(model);
-				role.Id = id;
-				_roleService.EditRole(role);
-				return RedirectToAction("Index", "Role");
-			}
-			else
-			{
-				// return View(model);
-			}
+        return Unauthorized();
+    }
 
-			return BadRequest();
-		}
-		#endregion
+    [HttpPost("role/edit/{id}")]
+    public IActionResult Edit(RoleViewModel model, string id)
+    {
+        if (ModelState.IsValid)
+        {
+            var role = _mapper.Map<Role>(model);
+            role.Id = id;
+            _roleService.EditRole(role);
+            return RedirectToAction("Index", "Role");
+        }
 
-		#region DeleteRole
-		[HttpGet]
-		[Route("role/delete/{id}")]
-		public IActionResult Delete([FromRoute] string id)
-		{
-			if (Logged.CEOAuth())
-			{
-				if (id is null)
-				{
-					return NotFound();
-				}
-				Role deleteRole = _roleService.GetRole(id);
-				if (deleteRole is null)
-				{
-					return NotFound();
-				}
-				_roleService.DeleteRole(deleteRole);
-				return RedirectToAction("Index", "Role");
-			}
-			else return Unauthorized();
-			
+        // return View(model);
+        return BadRequest();
+    }
 
-		}
-        #endregion
-
-		[HttpGet]
-		public IActionResult Index()
-		{
-			RoleSearch search = new RoleSearch();
-			search.Roles = this._roleService.GetRoles();
-			return View(search);
-		}
-    
-		[HttpGet]
-		public IActionResult Search(RoleSearch model)
-		{
-			model.Roles = this._roleService.GetRoles();
-			if (model.Name is not null)
-			{
-				model.Roles = model.Roles.Where(x => x.Name.Contains(model.Name)).ToList();
-			}
-			return View("Index", model);
-		}
-	}
+    #endregion
 }
-

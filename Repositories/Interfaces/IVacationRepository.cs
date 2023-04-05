@@ -1,14 +1,13 @@
-﻿using Models;
-using System.Linq;
+﻿using System.Linq;
+using Models;
 
-namespace Repositories.Interfaces
+namespace Repositories.Interfaces;
+
+public interface IVacationRepository
 {
-    public interface IVacationRepository
-    {
-        IQueryable<Vacation> GetVacations();
-        Vacation GetVacation(string id);
-        void AddVacation(Vacation vacation);
-        void EditVacation(Vacation vacation);
-        void DeleteVacation(Vacation vacation);
-    }
+    IQueryable<Vacation> GetVacations();
+    Vacation GetVacation(string id);
+    void AddVacation(Vacation vacation);
+    void EditVacation(Vacation vacation);
+    void DeleteVacation(Vacation vacation);
 }

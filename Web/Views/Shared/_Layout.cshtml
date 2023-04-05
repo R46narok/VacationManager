@@ -1,80 +1,81 @@
-﻿<!DOCTYPE html>
+﻿@using Repositories.Helpers
+<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>@ViewData["Title"] - Vaprom</title>
-	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="~/css/site.css" />
-	<link rel="stylesheet" href="~/css/custom-style.css" />
-	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-	<link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - Vaprom</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/css/custom-style.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
 </head>
 <body>
-	<header>
-		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
-			<div class="container">
-				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Vaprom</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-						aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-					<ul class="navbar-nav flex-grow-1">
-						@if (Repositories.Helpers.Logged.User is not null)
-						{
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Потребители</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Team" asp-action="Index">Екипи</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Index">Проекти</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Vacation" asp-action="Index">Отпуски</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Роли</a>
-							</li>
-						}
-						<li class="nav-item float-right">
-							@if (Repositories.Helpers.Logged.User is null)
-							{
-								<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Вход</a>
-							}
-							else
-							{
-								<a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Profile" asp-route-id="@Repositories.Helpers.Logged.User.UserName">Здравейте, @Repositories.Helpers.Logged.User.FirstName @Repositories.Helpers.Logged.User.LastName</a>
-							}
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</header>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+        <div class="container">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Vaprom</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    @if (Logged.User is not null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Потребители</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Team" asp-action="Index">Екипи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Index">Проекти</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Vacation" asp-action="Index">Отпуски</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Роли</a>
+                        </li>
+                    }
+                    <li class="nav-item float-right">
+                        @if (Logged.User is null)
+                        {
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Вход</a>
+                        }
+                        else
+                        {
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Profile" asp-route-id="@Logged.User.UserName">Здравейте, @Logged.User.FirstName @Logged.User.LastName</a>
+                        }
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
 
-	<div>
-		<main role="main" style="padding-bottom: 0 !important;">
-			<div class="container-fluid">
-				@RenderBody()
-			</div>
-		</main>
-	</div>
+<div>
+    <main role="main" style="padding-bottom: 0 !important;">
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
+    </main>
+</div>
 
-	<footer class="footer">
-		<div class="container">
-			&copy; 2022 - Vaprom
-		</div>
-	</footer>
+<footer class="footer">
+    <div class="container">
+        &copy; 2022 - Vaprom
+    </div>
+</footer>
 
-	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script type="text/javascript" href="~/lib/datapicker/bootstrap-datapicker.js"></script>
-	<script src="_content/MudBlazor/MudBlazor.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="~/lib/datapicker/bootstrap-datapicker.css" />
-	<script src="~/js/site.js" asp-append-version="true"></script>
-	@await RenderSectionAsync("Scripts", required: false)
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" href="~/lib/datapicker/bootstrap-datapicker.js"></script>
+<script src="_content/MudBlazor/MudBlazor.min.js"></script>
+<link rel="stylesheet" type="text/css" href="~/lib/datapicker/bootstrap-datapicker.css"/>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", false)
 </body>
 </html>

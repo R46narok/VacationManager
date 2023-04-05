@@ -1,41 +1,46 @@
-﻿using DataAccess;
+﻿using System;
+using System.Linq;
+using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Repositories.Interfaces;
-using System;
-using System.Linq;
 
-namespace Repositories
+namespace Repositories;
+
+public class TeamRepository : ITeamRepository
 {
-    public class TeamRepository : ITeamRepository
+    private readonly VacationManagerDbContext _context;
+
+    public TeamRepository(VacationManagerDbContext context)
     {
-        private readonly VacationManagerDbContext _context;
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+    }
 
-        public TeamRepository(VacationManagerDbContext context)
-        {
-            this._context = context ?? throw new ArgumentNullException(nameof(context));
-        }
+    public IQueryable<Team> GetTeams()
+    {
+        return _context.Teams.Include(x => x.TeamLeader).AsQueryable();
+    }
 
-        public IQueryable<Team> GetTeams() => this._context.Teams.Include(x => x.TeamLeader).AsQueryable();
+    public Team GetTeam(string id)
+    {
+        return _context.Teams.Find(id);
+    }
 
-        public Team GetTeam(string id) => this._context.Teams.Find(id);
+    public void AddTeam(Team team)
+    {
+        _context.Teams.Add(team);
+        _context.SaveChanges();
+    }
 
-        public void AddTeam(Team team)
-        {
-            this._context.Teams.Add(team);
-            this._context.SaveChanges();
-        }
+    public void EditTeam(Team team)
+    {
+        _context.Teams.Update(team);
+        _context.SaveChanges();
+    }
 
-        public void EditTeam(Team team)
-        {
-            this._context.Teams.Update(team);
-            this._context.SaveChanges();
-        }
-
-        public void DeleteTeam(Team team)
-        {
-            this._context.Teams.Remove(team);
-            this._context.SaveChanges();
-        }
+    public void DeleteTeam(Team team)
+    {
+        _context.Teams.Remove(team);
+        _context.SaveChanges();
     }
 }

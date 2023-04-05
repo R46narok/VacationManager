@@ -1,36 +1,51 @@
-using Microsoft.EntityFrameworkCore;
-using Models;
-using Repositories.Interfaces;
-using Web.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Models;
+using Models.Enums;
+using Repositories.Interfaces;
+using Web.Services.Interfaces;
 
-namespace Web.Services 
+namespace Web.Services;
+
+public class VacationService : IVacationService
 {
-    public class VacationService : IVacationService
+    private readonly IVacationRepository _vacationRepository;
+
+    public VacationService(IVacationRepository vacationRepository)
     {
-        private readonly IVacationRepository _vacationRepository;
+        _vacationRepository = vacationRepository ?? throw new ArgumentNullException(nameof(vacationRepository));
+    }
 
-        public VacationService(IVacationRepository vacationRepository)
-        {
-            this._vacationRepository = vacationRepository ?? throw new ArgumentNullException(nameof(vacationRepository));
-        }
+    public List<Vacation> GetVacations()
+    {
+        return _vacationRepository.GetVacations().Include(x => x.Applicant).ToList();
+    }
 
-        public List<Vacation> GetVacations() => this._vacationRepository.GetVacations().Include(x => x.Applicant).ToList();
+    public Vacation GetVacation(string id)
+    {
+        return GetVacations().Find(x => x.Id == id);
+    }
 
-        public Vacation GetVacation(string id) => GetVacations().Find(x => x.Id == id);
+    public void AddVacation(Vacation vacation)
+    {
+        _vacationRepository.AddVacation(vacation);
+    }
 
-        public void AddVacation(Vacation vacation) => this._vacationRepository.AddVacation(vacation);
+    public void ApproveVacation(Vacation vacation)
+    {
+        vacation.Status = ApprovalStatus.Approved;
+        _vacationRepository.EditVacation(vacation);
+    }
 
-        public void ApproveVacation(Vacation vacation)
-        {
-            vacation.Status = Models.Enums.ApprovalStatus.Approved;
-            this._vacationRepository.EditVacation(vacation);
-        }
+    public void EditVacation(Vacation vacation)
+    {
+        _vacationRepository.EditVacation(vacation);
+    }
 
-        public void EditVacation(Vacation vacation) => this._vacationRepository.EditVacation(vacation);
-
-        public void DeleteVacation(Vacation vacation) => this._vacationRepository.DeleteVacation(vacation);
+    public void DeleteVacation(Vacation vacation)
+    {
+        _vacationRepository.DeleteVacation(vacation);
     }
 }

@@ -1,142 +1,128 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Models;
-
 using Models.SearchModel;
 using Repositories.Helpers;
-using System.Collections.Generic;
-using System.Linq;
-
 using ViewModels.Input;
 using Web.Services.Interfaces;
 
-namespace Web.Controllers
+namespace Web.Controllers;
+
+public class TeamController : Controller
 {
-	public class TeamController : Controller
-	{
+    private readonly IMapper mapper;
+    private readonly IProjectService projectService;
+    private readonly ITeamService teamService;
+    private readonly IUserService userService;
 
-		private IMapper mapper;
-		private ITeamService teamService;
-		private IUserService userService;
-		private IProjectService projectService;
-		public TeamController(IMapper mapper, ITeamService teamService, IUserService userService, IProjectService projectService)
-		{
-			this.mapper = mapper;
-			this.teamService = teamService;
-			this.userService = userService;
-			this.projectService = projectService;
-		}
+    public TeamController(IMapper mapper, ITeamService teamService, IUserService userService,
+        IProjectService projectService)
+    {
+        this.mapper = mapper;
+        this.teamService = teamService;
+        this.userService = userService;
+        this.projectService = projectService;
+    }
 
-		[HttpGet]
-		public IActionResult Index()
-		{
-			TeamSearch search = new TeamSearch();
+    [HttpGet]
+    public IActionResult Index()
+    {
+        var search = new TeamSearch();
 
-			search.Results = this.teamService.GetTeams();
+        search.Results = teamService.GetTeams();
 
-			return View(search);
-		}
+        return View(search);
+    }
 
-		[HttpGet]
-		public IActionResult Search(TeamSearch search)
-		{
+    [HttpGet]
+    public IActionResult Search(TeamSearch search)
+    {
+        search.Results = teamService.GetTeams();
+        search.Results.ForEach(x => x.TeamLeader = userService.GetUserById(x.TeamLeaderId));
 
-			search.Results = this.teamService.GetTeams();
-			search.Results.ForEach(x => x.TeamLeader = this.userService.GetUserById(x.TeamLeaderId));
+        if (search.Name is not null) search.Results = search.Results.Where(x => x.Name.Contains(search.Name)).ToList();
+        if (search.TeamLeadNames is not null)
+            search.Results = search.Results.Where(x =>
+                x.TeamLeader is not null && (x.TeamLeader.FirstName.Contains(search.TeamLeadNames) ||
+                                             x.TeamLeader.LastName.Contains(search.TeamLeadNames))).ToList();
 
-			if (search.Name is not null)
-			{
-				search.Results = search.Results.Where(x => x.Name.Contains(search.Name)).ToList();
-			}
-			if (search.TeamLeadNames is not null)
-			{
-				search.Results = search.Results.Where(x => x.TeamLeader is not null && (x.TeamLeader.FirstName.Contains(search.TeamLeadNames) || x.TeamLeader.LastName.Contains(search.TeamLeadNames))).ToList();
-			}
+        return View("Index", search);
+    }
 
-			return View("Index", search);
-		}
-
-		#region CreateTeam
-		[HttpGet]
-		public IActionResult Create()
-		{
-			if (Logged.CEOAuth())
-			{
-				TeamViewModel model = new TeamViewModel();
-				return View(model);
-			}
-			else return Unauthorized();	
-		}
-		[HttpGet("Team/Edit/{id}")]
-		public IActionResult Edit(string id)
+    [HttpGet]
+    [Route("team/delete/{id}")]
+    public IActionResult Delete([FromRoute] string id)
+    {
+        if (Logged.CEOAuth())
         {
-			AddDeveloperViewModel model = new AddDeveloperViewModel();
-			return View(model);
+            var team = teamService.GetTeam(id);
+            foreach (var user in userService.GetUsers())
+                if (user.TeamId == id)
+                    user.TeamId = null;
+
+            teamService.DeleteTeam(team);
+            return RedirectToAction("Index", "Team");
         }
-		
-		[HttpPost("Team/Edit/{teamId}")]
-		public IActionResult Edit(AddDeveloperViewModel model, string teamId)
+
+        return Unauthorized();
+    }
+
+    #region CreateTeam
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+        if (Logged.CEOAuth())
         {
-			var team = teamService.GetTeam(teamId);
-			if (team.Developers is null)
-			{
-				team.Developers = new List<User>();
-			}
-			var developer = userService.GetUser(model.DeveloperUsername);
-			teamService.AddUserToTeam(developer, team);
-			return RedirectToAction("Index", "Team");
+            var model = new TeamViewModel();
+            return View(model);
         }
-		[HttpPost]
-		public IActionResult Create(TeamViewModel model)
-		{
 
-			if (ModelState.IsValid)
-			{
-				Team team = this.mapper.Map<Team>(model);
-				List<User> teamMembers = new List<User>();
-				User teamLeader = userService.GetUser(model.TeamLeaderUsername);
-				List<string> usernames = model.DevelopersUsernames.Split(' ').ToList();
-				foreach (string username in usernames)
-				{
-					teamMembers.Add(userService.GetUser(username));
-				}
-				teamLeader.Team = team;
+        return Unauthorized();
+    }
 
-				team.Developers = teamMembers;
-				team.TeamLeader = teamLeader;
-				
-				team.Project = projectService.GetProjects().FirstOrDefault(x => x.Name == model.ProjectName);
-				teamService.AddTeam(team);
+    [HttpGet("Team/Edit/{id}")]
+    public IActionResult Edit(string id)
+    {
+        var model = new AddDeveloperViewModel();
+        return View(model);
+    }
 
-				return RedirectToAction("Index", "Team");
-			}
-			else
-			{
-				return View(model);
-			}
-		}
-		#endregion
+    [HttpPost("Team/Edit/{teamId}")]
+    public IActionResult Edit(AddDeveloperViewModel model, string teamId)
+    {
+        var team = teamService.GetTeam(teamId);
+        if (team.Developers is null) team.Developers = new List<User>();
+        var developer = userService.GetUser(model.DeveloperUsername);
+        teamService.AddUserToTeam(developer, team);
+        return RedirectToAction("Index", "Team");
+    }
 
-		[HttpGet]
-		[Route("team/delete/{id}")]
-		public IActionResult Delete([FromRoute] string id)
-		{
-			if (Logged.CEOAuth())
-			{
-				Team team = teamService.GetTeam(id);
-				foreach (var user in userService.GetUsers())
-				{
-					if (user.TeamId == id) user.TeamId = null;
-				}
+    [HttpPost]
+    public IActionResult Create(TeamViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var team = mapper.Map<Team>(model);
+            var teamMembers = new List<User>();
+            var teamLeader = userService.GetUser(model.TeamLeaderUsername);
+            var usernames = model.DevelopersUsernames.Split(' ').ToList();
+            foreach (var username in usernames) teamMembers.Add(userService.GetUser(username));
+            teamLeader.Team = team;
 
-				this.teamService.DeleteTeam(team);
-				return RedirectToAction("Index", "Team");
-			}
-			else
-			{
-				return Unauthorized();
-			}
-		}
+            team.Developers = teamMembers;
+            team.TeamLeader = teamLeader;
 
-	}
+            team.Project = projectService.GetProjects().FirstOrDefault(x => x.Name == model.ProjectName);
+            teamService.AddTeam(team);
+
+            return RedirectToAction("Index", "Team");
+        }
+
+        return View(model);
+    }
+
+    #endregion
 }

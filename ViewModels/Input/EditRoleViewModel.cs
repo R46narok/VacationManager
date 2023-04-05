@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ViewModels.Input
+namespace ViewModels.Input;
+
+public class EditRoleViewModel
 {
-	public class EditRoleViewModel
-	{
-		[Required(ErrorMessage = "Името на ролята е задължително")]
-		public string Name { get; set; }
-		public string Id { get; set; }
-	}
+    [Required(ErrorMessage = "Името на ролята е задължително")]
+    public string Name { get; set; }
+
+    public string Id { get; set; }
 }

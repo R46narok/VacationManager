@@ -1,28 +1,27 @@
-﻿using Models.Enums;
-using System;
+﻿using System;
+using Models.Enums;
 
-namespace ViewModels.DTO
+namespace ViewModels.DTO;
+
+public class VacationDTO
 {
-	public class VacationDTO
-	{
-		public VacationType VacationType { get; set; }
-		
-		public DateTime FromDate { get; set; }
+    public VacationType VacationType { get; set; }
 
-		public DateTime ToDate { get; set; }
+    public DateTime FromDate { get; set; }
 
-		public bool IsHalfDay { get; set; }
+    public DateTime ToDate { get; set; }
 
-		public ApprovalStatus Status { get; set; }
+    public bool IsHalfDay { get; set; }
 
-		public string ApplicantUsername { get; set; }
-		
-		public string ApplicantName { get; set; }
+    public ApprovalStatus Status { get; set; }
 
-		public string ApplicantSurname { get; set; }
+    public string ApplicantUsername { get; set; }
 
-		public string ApplicantTeam { get; set; }
+    public string ApplicantName { get; set; }
 
-		public string FilePath { get; set; }
-	}
+    public string ApplicantSurname { get; set; }
+
+    public string ApplicantTeam { get; set; }
+
+    public string FilePath { get; set; }
 }

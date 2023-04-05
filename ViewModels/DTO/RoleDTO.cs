@@ -1,9 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace ViewModels.DTO;
 
-namespace ViewModels.DTO
+public class RoleDTO
 {
-	public class RoleDTO
-	{
-		public string Name { get; set; }
-	}
+    public string Name { get; set; }
 }

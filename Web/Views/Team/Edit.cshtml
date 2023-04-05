@@ -1,6 +1,7 @@
-﻿@model ViewModels.Input.AddDeveloperViewModel
-@inject Repositories.Interfaces.IProjectRepository ProjectRepo
-@inject Repositories.Interfaces.IUserRepository UserRepo
+﻿@using Repositories.Interfaces
+@model ViewModels.Input.AddDeveloperViewModel
+@inject IProjectRepository ProjectRepo
+@inject IUserRepository UserRepo
 
 @{
     ViewData["Title"] = "Редактирай екип";
@@ -12,7 +13,7 @@
         <div class="col-md-6 register-form-bg rounded">
             <form asp-action="Edit" asp-controller="Team" method="post">
 
-                
+
                 <div class="form-group">
                     <label class="control-label dark-heading">Име</label>
                     <input asp-for="DeveloperUsername" class="form-control dark-heading" id="devs" placeholder="Въведете име на разработчика..."/>

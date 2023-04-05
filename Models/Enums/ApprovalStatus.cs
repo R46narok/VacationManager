@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Models.Enums;
 
-namespace Models.Enums
+public enum ApprovalStatus
 {
-	public enum ApprovalStatus
-	{
-		Awaiting,
-		Approved,
-		Disapproved
-	}
+    Awaiting,
+    Approved,
+    Disapproved
 }

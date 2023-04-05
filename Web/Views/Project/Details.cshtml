@@ -1,41 +1,42 @@
-﻿@model ViewModels.Input.ProjectViewModel
-@inject Repositories.Interfaces.ITeamRepository TeamRepo
+﻿@using Repositories.Interfaces
+@model ViewModels.Input.ProjectViewModel
+@inject ITeamRepository TeamRepo
 
 @{
-	ViewData["Title"] = "Детайли за проект";
+    ViewData["Title"] = "Детайли за проект";
 }
 
 <body class="bg-orange">
-	<div class="container pb-5">
-		<div class="row justify-content-center lower">
-			<div class="col-md-6 register-form-bg rounded">
-				<form>
-					<div class="form-group text-center">
-						<h2 class="dark-heading b">Детайли за проект</h2>
-						<br />
-					</div>
-					<div class="form-group">
-						<label class="control-label dark-heading">Име</label>
-						<input asp-for="Name" class="form-control dark-heading" readonly/>
-					</div>
-					<div class="form-group">
-						<label class="control-label dark-heading">Описание</label>
-						<textarea asp-for="Description" class="form-control" readonly>@Model.Description</textarea>
-					</div>
-					<div class="form-group" id="teamsDiv">
-						<label class="control-label dark-heading">Екипи</label>
-						@if (Model.Teams is not null)
-						{
-							@foreach (var team in Model.Teams)
-							{
-								<input value="@team.Name" class="form-control dark-heading" readonly />
-							}
-						}
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+<div class="container pb-5">
+    <div class="row justify-content-center lower">
+        <div class="col-md-6 register-form-bg rounded">
+            <form>
+                <div class="form-group text-center">
+                    <h2 class="dark-heading b">Детайли за проект</h2>
+                    <br/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label dark-heading">Име</label>
+                    <input asp-for="Name" class="form-control dark-heading" readonly/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label dark-heading">Описание</label>
+                    <textarea asp-for="Description" class="form-control" readonly>@Model.Description</textarea>
+                </div>
+                <div class="form-group" id="teamsDiv">
+                    <label class="control-label dark-heading">Екипи</label>
+                    @if (Model.Teams is not null)
+                    {
+                        @foreach (var team in Model.Teams)
+                        {
+                            <input value="@team.Name" class="form-control dark-heading" readonly/>
+                        }
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 
 <script>

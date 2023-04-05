@@ -1,9 +1,8 @@
-﻿namespace Models.Enums
+﻿namespace Models.Enums;
+
+public enum VacationType
 {
-    public enum VacationType
-    {
-        Paid,
-        Unpaid,
-        Sick
-    }
+    Paid,
+    Unpaid,
+    Sick
 }

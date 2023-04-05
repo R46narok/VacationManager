@@ -1,14 +1,13 @@
-﻿using Models;
-using System.Linq;
+﻿using System.Linq;
+using Models;
 
-namespace Repositories.Interfaces
+namespace Repositories.Interfaces;
+
+public interface ITeamRepository
 {
-    public interface ITeamRepository
-    {
-        IQueryable<Team> GetTeams();
-        Team GetTeam(string id);
-        void AddTeam(Team team);
-        void EditTeam(Team team);
-        void DeleteTeam(Team team);
-    }
+    IQueryable<Team> GetTeams();
+    Team GetTeam(string id);
+    void AddTeam(Team team);
+    void EditTeam(Team team);
+    void DeleteTeam(Team team);
 }
