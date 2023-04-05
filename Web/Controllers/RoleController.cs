@@ -86,8 +86,10 @@ namespace Web.Controllers
 			}
 			else
 			{
-				return View(model);
+				// return View(model);
 			}
+
+			return BadRequest();
 		}
 		#endregion
 

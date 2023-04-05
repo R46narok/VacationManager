@@ -54,7 +54,7 @@ namespace VacationManager.Web
             services.AddScoped<IVacationDocumentService, VacationDocumentService>();
 
             services.AddDbContext<VacationManagerDbContext>(options =>
-                options.UseMySQL(
+                options.UseSqlServer(
                     Configuration.GetConnectionString("HostedConnection")));
             MapperConfiguration mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile())); 
             services.AddSingleton(mapperConfig.CreateMapper());

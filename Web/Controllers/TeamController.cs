@@ -27,13 +27,10 @@ namespace Web.Controllers
 			this.projectService = projectService;
 		}
 
-
-
 		[HttpGet]
 		public IActionResult Index()
 		{
 			TeamSearch search = new TeamSearch();
-
 
 			search.Results = this.teamService.GetTeams();
 
@@ -46,7 +43,6 @@ namespace Web.Controllers
 
 			search.Results = this.teamService.GetTeams();
 			search.Results.ForEach(x => x.TeamLeader = this.userService.GetUserById(x.TeamLeaderId));
-
 
 			if (search.Name is not null)
 			{
@@ -77,11 +73,12 @@ namespace Web.Controllers
 			AddDeveloperViewModel model = new AddDeveloperViewModel();
 			return View(model);
         }
+		
 		[HttpPost("Team/Edit/{teamId}")]
 		public IActionResult Edit(AddDeveloperViewModel model, string teamId)
         {
 			var team = teamService.GetTeam(teamId);
-			if (team.Developers == null)
+			if (team.Developers is null)
 			{
 				team.Developers = new List<User>();
 			}
@@ -98,12 +95,16 @@ namespace Web.Controllers
 				Team team = this.mapper.Map<Team>(model);
 				List<User> teamMembers = new List<User>();
 				User teamLeader = userService.GetUser(model.TeamLeaderUsername);
-				//List<string> usernames = model.DevelopersUsernames.Split(' ').ToList();
-				/*foreach (string username in usernames)
+				List<string> usernames = model.DevelopersUsernames.Split(' ').ToList();
+				foreach (string username in usernames)
 				{
 					teamMembers.Add(userService.GetUser(username));
-				}*/
+				}
+				teamLeader.Team = team;
+
+				team.Developers = teamMembers;
 				team.TeamLeader = teamLeader;
+				
 				team.Project = projectService.GetProjects().FirstOrDefault(x => x.Name == model.ProjectName);
 				teamService.AddTeam(team);
 
