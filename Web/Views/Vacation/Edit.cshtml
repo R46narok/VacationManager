@@ -1,4 +1,5 @@
-﻿@model ViewModels.Input.VacationViewModel
+﻿@using Models.Enums
+@model ViewModels.Input.VacationViewModel
 
 @{
     ViewData["Title"] = "Редактирай отпуск";
@@ -59,6 +60,19 @@
                             <label>До:</label>
                             <input type="date" autocomplete="off" id="begin" class="form-control" placeholder="yyyy-mm-dd" asp-for="ToDate"/>
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <label>Одобри отпуската</label>
+                        @if (Model.Status == ApprovalStatus.Approved)
+                        {
+                            <input type="checkbox" asp-for="Approved" checked/>
+                        }
+                        else
+                        {
+                            <input type="checkbox" asp-for="Approved"/>
+                        }
                     </div>
                 </div>
                 <div class="form-group align-items-center text-center">

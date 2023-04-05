@@ -130,6 +130,12 @@ public class VacationController : Controller
         vacation.Id = id;
         vacation.ApplicantId = Logged.User.Id;
 
+        vacation.Status = model.Approved switch
+        {
+            true => ApprovalStatus.Approved,
+            false => ApprovalStatus.Disapproved
+        };
+
         _vacationService.EditVacation(vacation);
         return RedirectToAction("Index", "Vacation");
     }

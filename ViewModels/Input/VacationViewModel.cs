@@ -31,5 +31,8 @@ public class VacationViewModel
     public string ApplicantTeam { get; set; }
 
     public string FilePath { get; set; }
+    
+    public bool Approved { get; set; }
+    
     public IFormFile File { get; set; }
 }
