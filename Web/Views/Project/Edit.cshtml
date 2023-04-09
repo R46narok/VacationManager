@@ -5,35 +5,32 @@
 }
 
 
-<body class="bg-orange">
-<div class="container pb-5">
-    <div class="row justify-content-center lower">
-        <div class="col-md-6 register-form-bg rounded">
+<body class="bg-light">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
             <form asp-action="Edit" asp-controller="Project" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group text-center">
-                    <h2 class="dark-heading b">Създай проект</h2>
-                    <br/>
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                </div>
+                <h2 class="text-center mb-5">Редактиране на проект</h2>
                 <div class="form-group">
-                    <label class="control-label dark-heading">Име</label>
-                    <input asp-for="Name" class="form-control dark-heading" placeholder="Въведете име на проекта..."/>
+                    <label class="font-weight-bold">Име на проекта</label>
+                    <input asp-for="Name" class="form-control" placeholder="Въведете име на проекта...">
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label dark-heading">Описание</label>
+                    <label class="font-weight-bold">Описание на проекта</label>
                     <textarea asp-for="Description" class="form-control" placeholder="Постави текста на новината..."></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
-                <div class="form-group align-items-center text-center">
-                    <input type="submit" id="register" value="Създай" class="btn btn-lg dark-button rounded"/>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary btn-lg">Запази</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 </body>
+
 
 <script>
 	function GetMoreTeams() {

@@ -8,90 +8,75 @@
     ViewData["Title"] = "Профил";
 }
 
-<body class="bg-orange">
-<div class="col-10 align-self-center mx-auto">
-    <div class="row py-5 px-4">
-        <div class="col-md-10 mx-auto">
-            <div class="bg-white shadow rounded overflow-hidden">
-                <div class="px-4 pt-0 pb-4 cover">
-                    <div class="media align-items-end profile-head">
-                        <div class="profile mr-3">
-                            <img src="/images/profilePicture.svg" alt="..." width="130" class="rounded-circle mb-2 img-thumbnail">
-                        </div>
-                        <div class="media-body mb-5 normal-text">
-                            <h3 class="mt-0 mb-1">
-                                <span style="background-color: white; padding: 5px;">
-                                    <b>@Model.FirstName @Model.LastName</b>
-                                </span>
-                            </h3>
+<body class="bg-light">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 py-5">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <img src="/images/profilePicture.svg" alt="..." width="130" class="rounded-circle mb-2 img-thumbnail">
+                        <h3 class="card-title mb-1">
+                            <span class="bg-primary text-white px-3 py-2 rounded-pill">@Model.FirstName @Model.LastName</span>
+                        </h3>
+                        <div class="card-text">
+                            <p class="normal-text">Потребителско име: @Model.UserName</p>
+                            @if (Model.Team is not null)
+                            {
+                                <p class="normal-text">Екип: @Model.Team.Name</p>
+                            }
+                            <p class="normal-text">Роля: @Model.Role.Name</p>
                         </div>
                     </div>
                 </div>
-                <div class="px-4 py-5" style="margin-top: 20px;">
-                    <div class="py-2 px-4 pb-3">
-                        <div class="d-flex align-items-center justify-content-between mb-3 normal-text">
-                            <h5 class="mb-0" style="text-indent: 10px;">Информация</h5>
-                        </div>
-                        <div class="container p-1">
-                            <div class="p-4 my-2 rounded shadow-sm bg-light">
-                                <p class="normal-text mb-0">Потребителско име: @Model.UserName</p>
-                                @if (Model.Team is not null)
-                                {
-                                    <p class="normal-text mb-0">Екип: @Model.Team.Name</p>
-                                }
-                                <p class="normal-text mb-0">Роля: @Model.Role.Name</p>
+            </div>
+            <div class="col-lg-8 col-md-6 py-5">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title">Отпуски</h4>
+                        @if (service.GetVacations().Where(x => x.Applicant == Model).Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>От дата</th>
+                                            <th>До дата</th>
+                                            <th>Статус</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var vacation in service.GetVacations().Where(x => x.Applicant == Model))
+                                        {
+                                            <tr>
+                                                <td>@vacation.FromDate.ToShortDateString()</td>
+                                                <td>@vacation.ToDate.ToShortDateString()</td>
+                                                <td>
+                                                    @if (vacation.Status == ApprovalStatus.Approved)
+                                                    {
+                                                        <div class="badge badge-success">Одобрен</div>
+                                                    }
+                                                    else if (vacation.Status == ApprovalStatus.Disapproved)
+                                                    {
+                                                        <div class="badge badge-danger">Отхвърлен</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="badge badge-warning">Изчакващ одобрение</div>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
-                        </div>
-                    </div>
-                    <div class="py-1 px-4 pb-3">
-                        <div class="d-flex align-items-center justify-content-between mb-3 normal-text">
-                            <h5 class="mb-0" style="text-indent: 10px;">Отпуски</h5>
-                        </div>
-                        <div class="container p-1">
-                            <div class="p-4 my-2 rounded shadow-sm bg-light">
-                                @if (service.GetVacations().Where(x => x.Applicant == Model) is not null)
-                                {
-                                    @foreach (var vacation in service.GetVacations().Where(x => x.Applicant == Model))
-                                    {
-                                        if (vacation.Status == ApprovalStatus.Approved)
-                                        {
-                                            <div>
-                                                <p>@vacation.FromDate.ToShortDateString() - @vacation.ToDate.ToShortDateString()</p>
-                                                <div class="bg-success text-white">
-                                                    Одобрен
-                                                </div>
-                                            </div>
-                                        }
-                                        else if (vacation.Status == ApprovalStatus.Disapproved)
-                                        {
-                                            <div>
-                                                <p>@vacation.FromDate.ToShortDateString() - @vacation.ToDate.ToShortDateString()</p>
-                                                <div class="bg-danger text-white">
-                                                    Отхвърлен
-                                                </div>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div>
-                                                <p>@vacation.FromDate.ToShortDateString() - @vacation.ToDate.ToShortDateString()</p>
-                                                <div class="bg-warning text-white">
-                                                    Изчакващ одобрение
-                                                </div>
-                                            </div>
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    <p>Служителят все още няма отпуски</p>
-                                }
-                            </div>
-                        </div>
+                        }
+                        else
+                        {
+                            <p class="normal-text">Служителят все още няма отпуски</p>
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </body>

@@ -6,77 +6,62 @@
     ViewData["Title"] = "Редактирай отпуск";
 }
 
-<body class="bg-orange">
-<div class="container pb-5">
-    <div class="row justify-content-center lower">
-        <div class="col-md-6 register-form-bg rounded">
-            <form asp-action="Edit" asp-controller="Vacation" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group text-center">
-                    <h2 class="dark-heading b">Заявка за отпуск</h2>
-                    <br/>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 bg-white rounded shadow-sm">
+                <form asp-action="Edit" asp-controller="Vacation" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <h2 class="text-center mb-4">Заявка за отпуск</h2>
                     <div asp-validation-summary="All" class="text-danger"></div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label dark-heading">Име</label>
-                    <input class="form-control dark-heading" asp-for="ApplicantName" readonly>
-                </div>
-                <div class="form-group">
-                    <label class="control-label dark-heading">Фамилия</label>
-                    <input class="form-control dark-heading" asp-for="ApplicantSurname" readonly>
-                </div>
-                <div class="form-group">
-                    <label class="control-label dark-heading">Екип</label>
-                    <input class="form-control dark-heading" asp-for="ApplicantTeam" readonly>
-                </div>
-                <div class="form-group">
-                    <label class="control-label dark-heading">Вид отпуск</label>
-                    <select class="form-control dark-heading" onchange="AddSickLeave()" asp-for="VacationTypeText">
-                        @foreach (VacationType vacation in Enum.GetValues(typeof(VacationType)))
-                        {
-                            <option id="@vacation">@vacation</option>
-                        }
-                    </select>
-                </div>
-                <div class="form-group" id="file">
-                    <label asp-for="File" class="control-label dark-heading">Болничен лист</label>
-                    <br>
-                    <input asp-for="File"/>
-                </div>
-                <div class="form-group big-checkbox" id="halfDay">
-                    <div class="form-check custom-checkbox">
-                        <input class="form-check-input custom-control-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label dark-heading custom-control-label" for="flexCheckDefault" asp-for="IsHalfDay">
-                            Половин ден отпуск
-                        </label>
-                    </div>
-                </div>
-                <div class="dates">
-                    <div class="row">
-                        <div class="col-md">
-                            <label>От:</label>
-                            <input type="date" autocomplete="off" id="begin" class="form-control" placeholder="yyyy-mm-dd" asp-for="FromDate"/>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="applicant-name" class="form-label">Име</label>
+                            <input id="applicant-name" class="form-control" asp-for="ApplicantName" readonly>
                         </div>
-                        <div class="col-md">
-                            <label>До:</label>
-                            <input type="date" autocomplete="off" id="begin" class="form-control" placeholder="yyyy-mm-dd" asp-for="ToDate"/>
+                        <div class="col-md-6">
+                            <label for="applicant-surname" class="form-label">Фамилия</label>
+                            <input id="applicant-surname" class="form-control" asp-for="ApplicantSurname" readonly>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="applicant-team" class="form-label">Екип</label>
+                            <input id="applicant-team" class="form-control" asp-for="ApplicantTeam" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="vacation-type" class="form-label">Вид отпуск</label>
+                            <select id="vacation-type" class="form-control" onchange="AddSickLeave()" asp-for="VacationTypeText">
+                                @foreach (VacationType vacation in Enum.GetValues(typeof(VacationType)))
+                                {
+                                    <option id="@vacation">@vacation</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="file" class="form-label">Болничен лист</label>
+                            <input type="file" class="form-control" id="file" asp-for="File" accept="image/*,.pdf">
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="is-half-day" asp-for="IsHalfDay">
+                                <label class="form-check-label" for="is-half-day">Половин ден отпуск</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="from-date" class="form-label">От:</label>
+                            <input type="date" id="from-date" class="form-control" asp-for="FromDate"/>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="to-date" class="form-label">До:</label>
+                            <input type="date" id="to-date" class="form-control" asp-for="ToDate"/>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="is-approved" asp-for="Approved">
+                                <label class="form-check-label" for="is-approved">Одобри отпуската</label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md">
-                        <label>Одобри отпуската</label>
-                        @if (Model.Status == ApprovalStatus.Approved)
-                        {
-                            <input type="checkbox" asp-for="Approved" checked/>
-                        }
-                        else
-                        {
-                            <input type="checkbox" asp-for="Approved"/>
-                        }
-                    </div>
-                </div>
-                <div class="form-group align-items-center text-center">
+                    <div class="form-group align-items-center text-center">
                     <input type="submit" id="register" value="Подай" class="btn btn-lg dark-button rounded"/>
                 </div>
             </form>

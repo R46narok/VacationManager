@@ -104,7 +104,7 @@ public class TeamController : Controller
     }
 
     [HttpPost]
-    public IActionResult Create(TeamViewModel model)
+    public IActionResult Create(TeamViewModel model) 
     {
         if (ModelState.IsValid)
         {

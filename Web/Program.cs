@@ -33,6 +33,29 @@ public class Program
                     PasswordHash = Hasher.Hash("rootpass123"),
                     RoleId = "1"
                 });
+
+            var teamlead = userRepository.GetUser("teamlead");
+            if (teamlead is null)
+                repository.Register(new User
+                {
+                    UserName = "teamlead",
+                    FirstName = "Team Lead",
+                    LastName = "Team Lead",
+                    PasswordHash = Hasher.Hash("pass"),
+                    RoleId = "3"
+                });
+            
+            
+            var dev = userRepository.GetUser("dev");
+            if (dev is null)
+                repository.Register(new User
+                {
+                    UserName = "dev",
+                    FirstName = "Developerski",
+                    LastName = "Developerski",
+                    PasswordHash = Hasher.Hash("pass"),
+                    RoleId = "2"
+                });
         }
 
         host.Run();
