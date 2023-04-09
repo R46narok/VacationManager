@@ -1,4 +1,6 @@
-﻿@model ViewModels.Input.VacationViewModel
+﻿@using Core.Data.Enums
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Core.ViewModels.VacationViewModel
 
 @{
     ViewData["Title"] = "Добави отпуск";
@@ -30,7 +32,7 @@
                 <div class="form-group">
                     <label class="control-label dark-heading">Вид отпуск</label>
                     <select class="form-control dark-heading" onchange="AddSickLeave()" asp-for="VacationTypeText">
-                        @foreach (Models.Enums.VacationType vacation in Enum.GetValues(typeof(Models.Enums.VacationType)))
+                        @foreach (VacationType vacation in Enum.GetValues(typeof(VacationType)))
                         {
                             <option id="@vacation">@vacation</option>
                         }

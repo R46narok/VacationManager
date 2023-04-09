@@ -2,7 +2,8 @@
 @inject IUserRepository user_repo
 @inject ITeamRepository team_repo
 
-@using Repositories.Interfaces
+@using Core.Data.Repositories.Interfaces
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Models.SearchModel.VacationSearch
 
 @{

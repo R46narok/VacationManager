@@ -51,7 +51,7 @@
 }
 
 .bg-orange {
-    background-color: #F4976C;
+    background-color: #19376D;
 }
 
 .b {
@@ -197,7 +197,7 @@ input[type=checkbox] {
 }
 
 .filter-heading {
-    background-color: #303C6C;
+    background-color: #A5D7E8;
     border-bottom: 50px;
 }
 
@@ -210,7 +210,7 @@ input[type=checkbox] {
 }
 
 .result-table {
-    background-color: #D5DBF2;
+    background-color: #E21818;
 }
 
 svg.edit-delete {
@@ -240,12 +240,12 @@ svg.edit-delete :hover {
 
 
 .ffb {
-    font-family: Bahnschrift;
+    font-family: Bahnschrift
 }
 
 .footer {
-    background-color: #C2C2C2;
-    color: white;
+    background-color: #A5D7E8;
+    color: black;
 }
 
 .normal-heading {

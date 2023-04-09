@@ -2,9 +2,11 @@
 @inject IUserRepository user_repo
 @inject ITeamRepository team_repo
 
-@using Repositories.Interfaces
 @using Repositories.Helpers
-@model Models.SearchModel.TeamSearch
+@using Core.Data.Repositories.Interfaces
+@using Core.Data
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Core.Data.SearchModel.TeamSearch
 
 @{
     ViewData["Title"] = "Екипи";

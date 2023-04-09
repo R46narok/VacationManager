@@ -1,5 +1,7 @@
 using AutoMapper;
-using DataAccess;
+using Core.Data;
+using Core.Data.Repositories;
+using Core.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Repositories;
-using Repositories.Interfaces;
 using Repositories.Mapper;
 using Web.Services;
 using Web.Services.Interfaces;

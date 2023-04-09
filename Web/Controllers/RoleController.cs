@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using AutoMapper;
+using Core.Data;
+using Core.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Models.SearchModel;

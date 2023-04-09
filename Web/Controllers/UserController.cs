@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq;
 using AutoMapper;
+using Core.Data;
+using Core.Data.Entities;
+using Core.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Models.SearchModel;
 using Repositories.Helpers;
-using Repositories.Interfaces;
 using ViewModels.Input;
 using Web.Services.Interfaces;
 

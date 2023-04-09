@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Core.Data.Entities;
+using Core.Data.Enums;
+using Core.Data.Repositories.Interfaces;
 using Models;
-using Models.Enums;
 using Moq;
 using NUnit.Framework;
-using Repositories.Interfaces;
 using Web.Services;
 
 namespace UnitTests.Services;

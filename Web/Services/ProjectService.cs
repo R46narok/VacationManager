@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Core.Data.Entities;
+using Core.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models;
-using Repositories.Interfaces;
 using Web.Services.Interfaces;
 
 namespace Web.Services;

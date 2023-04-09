@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Core.Data.Entities;
 using Models;
 
 namespace Web.Services.Interfaces;

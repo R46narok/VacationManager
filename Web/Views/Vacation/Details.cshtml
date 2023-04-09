@@ -1,4 +1,6 @@
-﻿@model ViewModels.DTO.VacationDTO
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Core.Data.Enums
+@model Core.Dto.VacationDTO
 
 @{
     ViewData["Title"] = "Детайли за отпуск";
@@ -31,7 +33,7 @@
                     <label class="control-label dark-heading">Вид отпуск</label>
                     <input class="form-control dark-heading" id="@Model.VacationType" asp-for="VacationType" readonly>
                 </div>
-                @if (Model.VacationType == Models.Enums.VacationType.Sick)
+                @if (Model.VacationType == VacationType.Sick)
                 {
                     <div class="form-group">
                         <label class="control-label dark-heading">Болничен лист</label>

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Aspose.Pdf;
+using Core.Data.Entities;
 using Models;
 using Web.Services.Interfaces;
 

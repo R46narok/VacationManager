@@ -1,10 +1,11 @@
-using DataAccess;
+using Core.Data;
+using Core.Data.Entities;
+using Core.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Models;
 using Repositories.Helpers;
-using Repositories.Interfaces;
 
 namespace VacationManager.Web;
 
@@ -22,7 +23,8 @@ public class Program
             var repository = scope.ServiceProvider.GetService<ILoginRegisterRepository>();
             var userRepository = scope.ServiceProvider.GetService<IUserRepository>();
 
-            if (userRepository.GetUser("root") is null)
+            var user = userRepository.GetUser("root");
+            if (user is null)
                 repository.Register(new User
                 {
                     UserName = "root",

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DataAccess;
+using Core.Data;
+using Core.Data.Entities;
+using Core.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using NUnit.Framework;
